@@ -4,11 +4,14 @@ import BaseGame from './_common/BaseGame/BaseGame'
 
 const BaseGameMemorized = memo(BaseGame)
 
-const Main = () => {
-	const { games } = useGames()
+const MINIMAL_BET_AMMOUNT = 150
 
-	const handleBet = useCallback(() => {
-		console.log('Update bet for the game ID')
+const Main = () => {
+	const { games, betGame, betsByGameId } = useGames()
+
+	const handleBet = useCallback((gameId: string, teamId?: string) => {
+		betGame(gameId, teamId, MINIMAL_BET_AMMOUNT)
+		console.log('Update bet for the game ID', gameId, teamId)
 	}, [])
 
 	return (
@@ -16,7 +19,12 @@ const Main = () => {
 			{/* Games */}
 			<div className="grid col-span-2 grid-cols-2 gap-4">
 				{games.map((game) => (
-					<BaseGameMemorized key={game.id} game={game} onBet={handleBet} />
+					<BaseGameMemorized
+						key={game.id}
+						game={game}
+						bet={betsByGameId[game.id]}
+						onBet={handleBet}
+					/>
 				))}
 			</div>
 

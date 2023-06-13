@@ -1,14 +1,20 @@
+import clsx from 'clsx'
 import React, { useRef, useLayoutEffect } from 'react'
-import { Game } from '../../../../../_types/index'
+
+import { Game } from '../../../_types/index'
 import LogoCS from './LogoCS.svg'
 import LogoDota from './LogoDota.svg'
 
 type BaseGameProps = {
-	game: Game & { numUpdates: number }
-	onBet: (options: { teamId: string; gameId: string }) => void
+	game: Game & { numUpdates?: number }
+	bet?: {
+		teamId?: string
+		amount?: number
+	}
+	onBet: (gameId: string, teamId?: string) => void
 }
 
-const BaseGame: React.FC<BaseGameProps> = ({ game, onBet }) => {
+const BaseGame: React.FC<BaseGameProps> = ({ game, bet, onBet }) => {
 	const numRenders = useRef(0)
 
 	// Run this on first render
@@ -19,6 +25,13 @@ const BaseGame: React.FC<BaseGameProps> = ({ game, onBet }) => {
 			return
 		}
 	})
+
+	const handleBetButtonClick = (teamId: string) => {
+		const newTeamId =
+			bet && bet.teamId && bet.teamId === teamId ? undefined : teamId
+
+		onBet(game.id, newTeamId)
+	}
 
 	return (
 		<div
@@ -45,11 +58,16 @@ const BaseGame: React.FC<BaseGameProps> = ({ game, onBet }) => {
 						>
 							<div className=" line-clamp-1">{team.name} </div>
 							<button
-								onClick={() => onBet({ teamId: team.id, gameId: game.id })}
-								className="
-							bg-blue-400 py-1 px-2 text-xs
-							text-white font-medium  rounded min-w-[70px] text-center
-							"
+								onClick={() => handleBetButtonClick(team.id)}
+								className={clsx(
+									`
+									py-1 px-2 text-xs
+									text-white font-medium  rounded min-w-[70px] text-center
+								`,
+									bet && bet.teamId === team.id
+										? 'bg-green-600'
+										: 'bg-zinc-400',
+								)}
 							>
 								{team.coefficient}
 							</button>
@@ -60,8 +78,7 @@ const BaseGame: React.FC<BaseGameProps> = ({ game, onBet }) => {
 
 			{/* Debugging footer */}
 			<footer className="py-1 px-3 bg-zinc-100 text-xs text-zinc-500 ">
-				Rendered {numRenders.current} times, data updated {game.numUpdates}{' '}
-				times
+				Rendered {numRenders.current} times
 			</footer>
 		</div>
 	)

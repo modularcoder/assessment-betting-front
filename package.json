@@ -16,9 +16,5 @@
     "@schickling/fps-meter": "^0.1.0",
     "concurrently": "^8.2.0",
     "react-fps": "^1.0.6"
-  },
-  "dependencies": {
-    "jsondiffpatch": "^0.4.1",
-    "zustand": "^4.3.8"
   }
 }
