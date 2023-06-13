@@ -1,17 +1,13 @@
 import { create } from 'zustand'
+// import { persist } from 'zustand/middleware'
 import { immer } from 'zustand/middleware/immer'
-import { Game, GamesMap } from '../_types'
+import { Game, GamesMap, GameBet } from '../_types'
 
 type BetsStore = {
 	games: Game[]
 	gamesById: GamesMap
 	betsByGameId: {
-		[key: string]:
-			| {
-					amount?: number
-					teamId?: string
-			  }
-			| undefined
+		[key: string]: GameBet
 	}
 }
 
@@ -21,37 +17,29 @@ type BetsStoreActions = {
 }
 
 const useBetsStore = create(
-	immer<BetsStore & BetsStoreActions>((set, get) => ({
+	immer<BetsStore & BetsStoreActions>((set) => ({
 		games: [],
 		gamesById: {},
 		betsByGameId: {},
-		setGames: (games: Game[], gamesById: GamesMap) =>
+		setGames: (games, gamesById) =>
 			set((state) => {
 				state.games = games
 				state.gamesById = gamesById
 			}),
-		betGame: (gameId: string, teamId?: string, amount?: number) =>
+		betGame: (gameId, teamId, amount = 0) =>
 			set((state) => {
+				if (typeof teamId === 'undefined') {
+					delete state.betsByGameId[gameId]
+					return
+				}
+
 				state.betsByGameId[gameId] = {
+					gameId,
 					teamId,
 					amount,
 				}
 			}),
 	})),
 )
-
-// const useBetsStore = create<BetsStore>()(
-// 	devtools(
-// 		persist(
-// 			(set) => ({
-// 				bears: 0,
-// 				increase: (by) => set((state) => ({ bears: state.bears + by })),
-// 			}),
-// 			{
-// 				name: 'bear-storage',
-// 			},
-// 		),
-// 	),
-// )
 
 export default useBetsStore

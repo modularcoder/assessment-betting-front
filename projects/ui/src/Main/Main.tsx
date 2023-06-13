@@ -1,32 +1,24 @@
 import { memo, useCallback } from 'react'
 import useGames from './_hooks/useGames'
-import BaseGame from './_common/BaseGame/BaseGame'
-
-const BaseGameMemorized = memo(BaseGame)
-
-const MINIMAL_BET_AMMOUNT = 150
+import GamesList from './GamesList/GamesList'
+import { GameBet } from '../_types'
 
 const Main = () => {
 	const { games, betGame, betsByGameId } = useGames()
 
-	const handleBet = useCallback((gameId: string, teamId?: string) => {
-		betGame(gameId, teamId, MINIMAL_BET_AMMOUNT)
-		console.log('Update bet for the game ID', gameId, teamId)
-	}, [])
+	const handleBet: (gameId: string, teamId?: string) => void = useCallback(
+		(gameId, teamId?: string) => {
+			console.log(`Game ${gameId} ${teamId}`)
+
+			betGame(gameId, teamId)
+		},
+		[],
+	)
 
 	return (
 		<main className="grid grid-cols-3 gap-4  container mx-auto py-8">
 			{/* Games */}
-			<div className="grid col-span-2 grid-cols-2 gap-4">
-				{games.map((game) => (
-					<BaseGameMemorized
-						key={game.id}
-						game={game}
-						bet={betsByGameId[game.id]}
-						onBet={handleBet}
-					/>
-				))}
-			</div>
+			<GamesList games={games} bets={betsByGameId} onBetGame={handleBet} />
 
 			{/* User */}
 			<div className="">
