@@ -1,0 +1,32 @@
+{
+  "name": "starter-ts",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "npx nodemon",
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@faker-js/faker": "^8.0.2",
+    "@types/cors": "^2.8.13",
+    "@types/express-ws": "^3.0.1",
+    "@types/lodash": "^4.14.195",
+    "@types/node": "^18.16.3",
+    "@types/uuid": "^9.0.2",
+    "lodash": "^4.17.21",
+    "nodemon": "^2.0.22",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.4"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express-ws": "^5.0.2",
+    "uuid": "^9.0.0"
+  }
+}

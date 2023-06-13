@@ -1,0 +1,21 @@
+{
+  "name": "assessment-betting-front",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "concurrently \"npm run start --prefix projects/api\" \"npm run preview --prefix projects/ui\"",
+    "dev": "concurrently \"npm run dev --prefix projects/api\" \"npm run dev --prefix projects/ui\"",
+    "build": "concurrently \"npm run build --prefix projects/api\" \"npm run build --prefix projects/ui\"",
+    "postinstall": "concurrently \"npm install --prefix projects/api\" \"npm install --prefix projects/ui\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^8.2.0"
+  },
+  "dependencies": {
+    "jsondiffpatch": "^0.4.1"
+  }
+}
