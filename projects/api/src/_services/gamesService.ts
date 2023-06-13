@@ -9,7 +9,7 @@ const generateRandomCoefficient = () => {
 	return round(1 + random(0.1, 1), 2)
 }
 
-const generateGames = (numGames: number = 1000) => {
+export const generateGames = (numGames: number = 1000) => {
 	games = Array(numGames)
 		.fill(null)
 		.map(() => {
@@ -48,6 +48,3 @@ export const updateRandomGame: () => Game = () => {
 
 	return randomGame
 }
-
-// Generate fake 1000 initial games
-generateGames(500)

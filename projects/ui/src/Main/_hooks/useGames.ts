@@ -6,13 +6,17 @@ import { Game } from '../../../../_types'
 const API_URL = 'http://127.0.0.1:8080/games'
 const WS_URL = 'ws://127.0.0.1:8080/games'
 
+type GameData = Game & {
+	numUpdates: number
+}
+
 type GamesMap = { [key: string]: Game }
 
 export default function () {
 	const [isLoading, setIsLoading] = useState(false)
 	const [error, setError] = useState<string>()
 	const [isLive, setIsLive] = useState(false)
-	const [games, setGames] = useState<Game[]>([])
+	const [games, setGames] = useState<GameData[]>([])
 
 	// Make initial call to REST api
 	useEffect(() => {
@@ -24,9 +28,12 @@ export default function () {
 				const res = await fetch(API_URL)
 				const gamesData: Game[] = await res.json()
 
-				console.log('games data', gamesData)
-
-				setGames(gamesData)
+				setGames(
+					gamesData.map((game) => ({
+						numUpdates: 0,
+						...game,
+					})),
+				)
 			} catch (err) {
 				console.error('err', err)
 				setError('Could not load the data')
@@ -49,8 +56,6 @@ export default function () {
 			setIsLive(false)
 		},
 		onMessage: (message) => {
-			console.log('New message', message)
-
 			const gamesUpdated = JSON.parse(message.data) as Game[]
 			const gamesUpdatedById = gamesUpdated.reduce(
 				(gamesById: GamesMap, game) => {
@@ -63,7 +68,14 @@ export default function () {
 
 			setGames((prevState) =>
 				prevState.map((game) => {
-					return gamesUpdatedById[game.id] ? gamesUpdatedById[game.id] : game
+					if (gamesUpdatedById[game.id]) {
+						return {
+							numUpdates: game.numUpdates + 1,
+							...gamesUpdatedById[game.id],
+						}
+					}
+
+					return game
 				}),
 			)
 		},

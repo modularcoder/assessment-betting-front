@@ -1,9 +1,16 @@
 // import http from 'http'
 import express, { Express, Request, Response } from 'express'
 import expressWs from 'express-ws'
-import { getGames, updateRandomGame } from './_services/gamesService'
-import cors from 'cors'
+import {
+	generateGames,
+	getGames,
+	updateRandomGame,
+} from './_services/gamesService'
 
+// Generate fake 2000 initial games
+generateGames(2000)
+
+import cors from 'cors'
 const port = 8080
 
 const appBase: Express = express()
@@ -35,12 +42,12 @@ app.ws('/games', function (ws, req) {
 	setInterval(() => {
 		ws.send(
 			JSON.stringify(
-				Array(30)
+				Array(50)
 					.fill(null)
 					.map(() => updateRandomGame()),
 			),
 		)
-	}, 5000)
+	}, 300)
 })
 
 app.listen(port, () => {
