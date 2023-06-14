@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react'
-import { Game, GamesMap, GameBet } from '../../_types'
+import { GamesMap, GameBet } from '../../_types'
 import BaseGame from '../_common/BaseGame/BaseGame'
 
 type GameBetsProps = {
@@ -18,7 +18,7 @@ const GameBets: React.FC<GameBetsProps> = ({ bets, gamesById, onBetGame }) => {
 
 	return (
 		<div className="w-full p-4 rounded-lg shadow-lg bg-white flex-1 overflow-y-auto  ">
-			Betting Widget
+			Active Bets
 			<div className="divide-y">
 				{bets.map((bet) => (
 					<div key={bet.gameId} className="py-4">

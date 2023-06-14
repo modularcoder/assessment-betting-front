@@ -1,10 +1,12 @@
-import { memo, useCallback } from 'react'
+import { useCallback } from 'react'
 import useGames from './_hooks/useGames'
 import GamesList from './GamesList/GamesList'
 import GamesBets from './GamesBets/GamesBets'
 
 const Main = () => {
-	const { games, gamesById, bets, betsByGameId, betGame } = useGames()
+	const { games: gamesAll, gamesById, bets, betsByGameId, betGame } = useGames()
+
+	const games = gamesAll.slice(0, 10)
 
 	const handleBet: (gameId: string, teamId?: string) => void = useCallback(
 		(gameId, teamId?: string) => {

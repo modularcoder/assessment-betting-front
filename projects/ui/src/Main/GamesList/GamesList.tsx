@@ -4,6 +4,7 @@ import { Game, GameBet } from '../../_types'
 import BaseGameCard from '../_common/BaseGameCard/BaseGameCard'
 import BaseGame from '../_common/BaseGame/BaseGame'
 
+const BaseGameCardMemorized = memo(BaseGameCard)
 const BaseGameMemorized = memo(BaseGame)
 
 type GamesListProps = {
@@ -25,13 +26,13 @@ const GamesList: React.FC<GamesListProps> = ({ games, bets, onBetGame }) => {
 	return (
 		<div className="grid  md:grid-cols-2 gap-4 sticky top-8">
 			{games.map((game) => (
-				<BaseGameCard key={game.id}>
+				<BaseGameCardMemorized key={game.id}>
 					<BaseGameMemorized
 						game={game}
 						bet={bets[game.id]}
 						onBet={handleBetGame}
 					/>
-				</BaseGameCard>
+				</BaseGameCardMemorized>
 			))}
 		</div>
 	)

@@ -1,0 +1,24 @@
+FROM node:lts-alpine as build
+
+WORKDIR /app
+
+RUN mkdir -p /app/ui
+
+
+# install project dependencies
+COPY ./projects/ui/package.json ./ui
+COPY ./projects/ui/package-lock.json ./ui
+
+RUN npm install --prefix ui
+
+# copy project files and folders to the current working directory (i.e. 'app' folder)
+COPY ./projects/_types ./_types
+COPY ./projects/ui ./ui
+
+
+RUN npm run build --prefix ui
+
+FROM build as serve
+
+# EXPOSE 3005
+CMD [ "npm", "run", "serve", "--prefix", "ui"]

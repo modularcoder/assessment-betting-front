@@ -51,43 +51,45 @@ export default function () {
 		getData()
 	}, [])
 
-	// useWebSocket(WS_URL, {
-	// 	reconnectInterval: 3000,
-	// 	onOpen: () => {
-	// 		console.log('WebSocket connection established.')
+	useWebSocket(WS_URL, {
+		reconnectInterval: 3000,
+		onOpen: () => {
+			console.log('WebSocket connection established.')
 
-	// 		setIsLive(true)
-	// 	},
-	// 	onClose: () => {
-	// 		console.log('WebSocket connection closed.')
+			setIsLive(true)
+		},
+		onClose: () => {
+			console.log('WebSocket connection closed.')
 
-	// 		setIsLive(false)
-	// 	},
-	// 	onMessage: (message) => {
-	// 		const gamesUpdated = JSON.parse(message.data) as Game[]
-	// 		const gamesUpdatedById = gamesUpdated.reduce(
-	// 			(gamesById: GamesMap, game) => {
-	// 				gamesById[game.id] = game
+			setIsLive(false)
+		},
+		onMessage: (message) => {
+			const gamesUpdated = JSON.parse(message.data) as Game[]
+			const gamesUpdatedById = gamesUpdated.reduce(
+				(gamesById: GamesMap, game) => {
+					gamesById[game.id] = game
 
-	// 				return gamesById
-	// 			},
-	// 			{},
-	// 		)
+					return gamesById
+				},
+				{},
+			)
 
-	// 		setGames((prevState) =>
-	// 			prevState.map((game) => {
-	// 				if (gamesUpdatedById[game.id]) {
-	// 					return {
-	// 						numUpdates: game.numUpdates + 1,
-	// 						...gamesUpdatedById[game.id],
-	// 					}
-	// 				}
+			setGames(gamesUpdated, gamesUpdatedById)
 
-	// 				return game
-	// 			}),
-	// 		)
-	// 	},
-	// })
+			// setGames((prevState) =>
+			// 	prevState.map((game) => {
+			// 		if (gamesUpdatedById[game.id]) {
+			// 			return {
+			// 				numUpdates: game.numUpdates + 1,
+			// 				...gamesUpdatedById[game.id],
+			// 			}
+			// 		}
+
+			// 		return game
+			// 	}),
+			// )
+		},
+	})
 
 	return {
 		isLive,

@@ -1,0 +1,24 @@
+FROM node:lts-alpine as build
+
+WORKDIR /app
+
+RUN mkdir -p /app/api
+
+
+# install project dependencies
+COPY ./projects/api/package.json ./api
+COPY ./projects/api/package-lock.json ./api
+
+RUN npm install --prefix api
+
+# copy project files and folders to the current working directory (i.e. 'app' folder)
+COPY ./projects/_types ./_types
+COPY ./projects/api ./api
+
+
+RUN npm run build --prefix api
+
+FROM build as serve
+
+# EXPOSE 3005
+CMD [ "npm", "start", "--prefix", "api"]

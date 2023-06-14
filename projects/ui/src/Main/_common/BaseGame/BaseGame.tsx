@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import React, { useRef, useLayoutEffect } from 'react'
+import React from 'react'
 
 import { Game } from '../../../_types/index'
 import LogoCS from './LogoCS.svg'
@@ -15,6 +15,8 @@ type BaseGameProps = {
 }
 
 const BaseGame: React.FC<BaseGameProps> = ({ game, bet, onBet }) => {
+	console.log('BaseGame Rendered')
+
 	const handleBetButtonClick = (teamId: string) => {
 		const newTeamId =
 			bet && bet.teamId && bet.teamId === teamId ? undefined : teamId
