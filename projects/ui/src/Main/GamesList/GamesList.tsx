@@ -12,6 +12,7 @@ type GamesListProps = {
 	bets: {
 		[key: string]: GameBet
 	}
+	isLoading: boolean
 	onBetGame: (gameId: string, teamId?: string) => void
 }
 

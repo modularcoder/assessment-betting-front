@@ -1,5 +1,4 @@
 import { create } from 'zustand'
-// import { persist } from 'zustand/middleware'
 import { immer } from 'zustand/middleware/immer'
 import { Game, GamesMap, GameBet } from '../_types'
 
@@ -14,6 +13,7 @@ type BetsStore = {
 
 type BetsStoreActions = {
 	setGames: (games: Game[], gamesById: GamesMap) => void
+	updateGames: (gamesById: GamesMap) => void
 	betGame: (gameId: string, teamId?: string, amount?: number) => void
 }
 
@@ -27,6 +27,12 @@ const useBetsStore = create(
 			set((state) => {
 				state.games = games
 				state.gamesById = gamesById
+			}),
+		updateGames: (gamesById) =>
+			set((state) => {
+				Object.keys(gamesById).forEach((gameId) => {
+					state.gamesById[gameId] = gamesById[gameId]
+				})
 			}),
 		betGame: (gameId, teamId, amount = 0) =>
 			set((state) => {

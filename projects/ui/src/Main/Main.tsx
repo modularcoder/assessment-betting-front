@@ -1,12 +1,17 @@
-import { useCallback } from 'react'
+import { useCallback, useEffect } from 'react'
 import useGames from './_hooks/useGames'
 import GamesList from './GamesList/GamesList'
 import GamesBets from './GamesBets/GamesBets'
 
 const Main = () => {
-	const { games: gamesAll, gamesById, bets, betsByGameId, betGame } = useGames()
+	const { isLoading, games, gamesById, bets, betsByGameId, betGame } =
+		useGames()
 
-	const games = gamesAll.slice(0, 10)
+	useEffect(() => {
+		console.log('Main mounted')
+	}, [])
+
+	// const games = gamesAll.slice(0, 10)
 
 	const handleBet: (gameId: string, teamId?: string) => void = useCallback(
 		(gameId, teamId?: string) => {
@@ -21,7 +26,12 @@ const Main = () => {
 		<main className="grid grid-cols-3 gap-4  container mx-auto py-8 min-h-[400px]">
 			{/* Games */}
 			<div className="col-span-2">
-				<GamesList games={games} bets={betsByGameId} onBetGame={handleBet} />
+				<GamesList
+					games={games}
+					bets={betsByGameId}
+					onBetGame={handleBet}
+					isLoading={isLoading}
+				/>
 			</div>
 
 			{/* GamesBets */}

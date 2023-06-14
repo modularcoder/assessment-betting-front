@@ -1,13 +1,72 @@
 import { useState, useEffect } from 'react'
-import useWebSocket from 'react-use-websocket'
-import { Game, GamesMap } from '../../_types'
 import useBetsStore from '../../_stores/useBetsStore'
+import GamesWorker from './useGames.worker.ts?worker'
 
-// This should come from .env
-const API_URL = 'http://127.0.0.1:8080/games'
-const WS_URL = 'ws://127.0.0.1:8080/games'
+export default function useGames() {
+	console.log('use Games')
 
-export default function () {
+	// const worker = useWorker(createWorker)
+
+	const [isLoading, setIsLoading] = useState(false)
+	const [error, setError] = useState<string>()
+	const [isLive, setIsLive] = useState(false)
+
+	const {
+		games,
+		gamesById,
+		bets,
+		betsByGameId,
+		setGames,
+		updateGames,
+		betGame,
+	} = useBetsStore((state) => ({
+		games: state.games,
+		gamesById: state.gamesById,
+		bets: state.bets,
+		betsByGameId: state.betsByGameId,
+		setGames: state.setGames,
+		updateGames: state.updateGames,
+		betGame: state.betGame,
+	}))
+
+	// Subscribe/unsubscribe from worker events
+	useEffect(() => {
+		setIsLoading(true)
+
+		const worker = new GamesWorker()
+
+		worker.onmessage = (message) => {
+			console.log('Message from worker', message)
+		}
+
+		worker.onerror = (err: unknown) => {
+			if (err instanceof Error) {
+				setIsLoading(false)
+				setError(err.message)
+			}
+		}
+
+		// Terminate the web worker on unmount
+		return () => {
+			console.log('terminate the web worker')
+			worker.terminate()
+		}
+	}, [])
+
+	return {
+		isLoading,
+		error,
+		isLive,
+		games,
+		gamesById,
+		bets,
+		betsByGameId,
+		betGame,
+	}
+}
+
+/*
+function useGamesLegacy() {
 	const { games, gamesById, bets, betsByGameId, setGames, betGame } =
 		useBetsStore((state) => ({
 			games: state.games,
@@ -102,3 +161,5 @@ export default function () {
 		betGame,
 	}
 }
+
+*/
