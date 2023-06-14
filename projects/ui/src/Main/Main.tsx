@@ -1,11 +1,12 @@
 import { useCallback, useEffect } from 'react'
-import useGames from './_hooks/useGames'
+import { useGamesSubscription, useGames, useGamesBets } from './_hooks'
 import GamesList from './GamesList/GamesList'
 import GamesBets from './GamesBets/GamesBets'
 
 const Main = () => {
-	const { isLoading, games, gamesById, bets, betsByGameId, betGame } =
-		useGames()
+	const { isLoading, isLive } = useGamesSubscription()
+	const { games, gamesById } = useGames()
+	const { bets, betsByGameId, betGame } = useGamesBets()
 
 	useEffect(() => {
 		console.log('Main mounted')

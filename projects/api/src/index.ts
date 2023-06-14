@@ -30,14 +30,6 @@ app.get('/games', (req: Request, res: Response) => {
 })
 
 app.ws('/games', function (ws, req) {
-	// ws.on('open', () => {
-	// 	ws.send(JSON.stringify(getGames()))
-	// })
-
-	ws.on('message', function (msg) {
-		console.log(msg)
-	})
-
 	// Send update about 30 dandom games every 50 ms
 	setInterval(() => {
 		ws.send(
