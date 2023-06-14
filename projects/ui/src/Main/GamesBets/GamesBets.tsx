@@ -1,21 +1,32 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import { Game, GamesMap, GameBet } from '../../_types'
+import BaseGame from '../_common/BaseGame/BaseGame'
 
 type GameBetsProps = {
 	gamesById: GamesMap
 	bets: GameBet[]
+	onBetGame: (gameId: string, teamId?: string) => void
 }
 
-const GameBets: React.FC<GameBetsProps> = ({ bets, gamesById }) => {
+const GameBets: React.FC<GameBetsProps> = ({ bets, gamesById, onBetGame }) => {
+	const handleBetGame: GameBetsProps['onBetGame'] = useCallback(
+		(gameId, teamId) => {
+			onBetGame(gameId, teamId)
+		},
+		[],
+	)
+
 	return (
-		<div className="w-full p-4 rounded-lg shadow-lg bg-white sticky top-8 min-h-[400px]  ">
+		<div className="w-full p-4 rounded-lg shadow-lg bg-white flex-1 overflow-y-auto  ">
 			Betting Widget
 			<div className="divide-y">
 				{bets.map((bet) => (
-					<div key={bet.gameId}>
-						Game: {gamesById[bet.gameId].id}
-						Team: {bet.teamId}
-						{/* Bet: {gamesById[bet.gameId]} */}
+					<div key={bet.gameId} className="py-4">
+						<BaseGame
+							game={gamesById[bet.gameId]}
+							bet={bet}
+							onBet={handleBetGame}
+						/>
 					</div>
 				))}
 			</div>

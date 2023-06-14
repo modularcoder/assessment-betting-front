@@ -16,15 +16,17 @@ const Main = () => {
 	)
 
 	return (
-		<main className="grid grid-cols-3 gap-4  container mx-auto py-8">
+		<main className="grid grid-cols-3 gap-4  container mx-auto py-8 min-h-[400px]">
 			{/* Games */}
 			<div className="col-span-2">
 				<GamesList games={games} bets={betsByGameId} onBetGame={handleBet} />
 			</div>
 
 			{/* GamesBets */}
-			<div className="">
-				<GamesBets gamesById={gamesById} bets={bets} />
+			<div>
+				<div className="sticky flex top-8 h-[calc(100vh-64px)]">
+					<GamesBets gamesById={gamesById} bets={bets} onBetGame={handleBet} />
+				</div>
 			</div>
 		</main>
 	)

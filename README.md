@@ -12,6 +12,7 @@
 
 
 - The project consists of API and UI packages
+- Offload the state calculation to webworker
 - The system should be bundled into docker and be easily deployable to different environment
 - The UI app needs to subscribe to the real-time odds coming from server
 - Network optimization
