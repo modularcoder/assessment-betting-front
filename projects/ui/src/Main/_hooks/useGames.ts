@@ -8,12 +8,16 @@ const API_URL = 'http://127.0.0.1:8080/games'
 const WS_URL = 'ws://127.0.0.1:8080/games'
 
 export default function () {
-	const [games, betsByGameId, setGames, betGame] = useBetsStore((state) => [
-		state.games,
-		state.betsByGameId,
-		state.setGames,
-		state.betGame,
-	])
+	const { games, gamesById, bets, betsByGameId, setGames, betGame } =
+		useBetsStore((state) => ({
+			games: state.games,
+			gamesById: state.gamesById,
+			bets: state.bets,
+			betsByGameId: state.betsByGameId,
+			setGames: state.setGames,
+			betGame: state.betGame,
+		}))
+
 	const [isLoading, setIsLoading] = useState(false)
 	const [error, setError] = useState<string>()
 	const [isLive, setIsLive] = useState(false)
@@ -90,6 +94,8 @@ export default function () {
 		isLoading,
 		error,
 		games,
+		gamesById,
+		bets,
 		betsByGameId,
 		betGame,
 	}

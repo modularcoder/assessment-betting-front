@@ -6,6 +6,7 @@ import { Game, GamesMap, GameBet } from '../_types'
 type BetsStore = {
 	games: Game[]
 	gamesById: GamesMap
+	bets: GameBet[]
 	betsByGameId: {
 		[key: string]: GameBet
 	}
@@ -20,6 +21,7 @@ const useBetsStore = create(
 	immer<BetsStore & BetsStoreActions>((set) => ({
 		games: [],
 		gamesById: {},
+		bets: [],
 		betsByGameId: {},
 		setGames: (games, gamesById) =>
 			set((state) => {
@@ -28,16 +30,29 @@ const useBetsStore = create(
 			}),
 		betGame: (gameId, teamId, amount = 0) =>
 			set((state) => {
+				const prevBetIndex = state.bets.findIndex(
+					(bet) => bet.gameId === gameId,
+				)
+
 				if (typeof teamId === 'undefined') {
+					state.bets.splice(prevBetIndex, 1)
 					delete state.betsByGameId[gameId]
 					return
 				}
 
-				state.betsByGameId[gameId] = {
+				const bet = {
 					gameId,
 					teamId,
 					amount,
 				}
+
+				if (prevBetIndex === -1) {
+					state.bets.push(bet)
+				} else {
+					state.bets[prevBetIndex] = bet
+				}
+
+				state.betsByGameId[gameId] = bet
 			}),
 	})),
 )

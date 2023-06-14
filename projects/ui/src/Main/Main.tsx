@@ -1,10 +1,10 @@
 import { memo, useCallback } from 'react'
 import useGames from './_hooks/useGames'
 import GamesList from './GamesList/GamesList'
-import { GameBet } from '../_types'
+import GamesBets from './GamesBets/GamesBets'
 
 const Main = () => {
-	const { games, betGame, betsByGameId } = useGames()
+	const { games, gamesById, bets, betsByGameId, betGame } = useGames()
 
 	const handleBet: (gameId: string, teamId?: string) => void = useCallback(
 		(gameId, teamId?: string) => {
@@ -18,13 +18,13 @@ const Main = () => {
 	return (
 		<main className="grid grid-cols-3 gap-4  container mx-auto py-8">
 			{/* Games */}
-			<GamesList games={games} bets={betsByGameId} onBetGame={handleBet} />
+			<div className="col-span-2">
+				<GamesList games={games} bets={betsByGameId} onBetGame={handleBet} />
+			</div>
 
-			{/* User */}
+			{/* GamesBets */}
 			<div className="">
-				<div className="w-full p-4 rounded-lg shadow-lg bg-white sticky top-8 min-h-[400px]  ">
-					Betting Widget
-				</div>
+				<GamesBets gamesById={gamesById} bets={bets} />
 			</div>
 		</main>
 	)

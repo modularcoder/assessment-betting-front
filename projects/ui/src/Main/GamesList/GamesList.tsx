@@ -21,7 +21,7 @@ const GamesList: React.FC<GamesListProps> = ({ games, bets, onBetGame }) => {
 	)
 
 	return (
-		<div className="grid col-span-2 grid-cols-2 gap-4">
+		<div className="grid  md:grid-cols-2 gap-4">
 			{games.map((game) => (
 				<BaseGameMemorized
 					key={game.id}
