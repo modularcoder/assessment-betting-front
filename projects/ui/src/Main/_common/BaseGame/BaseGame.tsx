@@ -25,7 +25,7 @@ const BaseGame: React.FC<BaseGameProps> = ({ game, bet, onBet }) => {
 	}
 
 	return (
-		<div className="flex flex-row space-x-2  flex-1">
+		<div className="flex flex-row space-x-2  flex-1 h-16">
 			{/* Game Logo */}
 			<div>
 				<div className="w-16 aspect-square rounded-lg shadow overflow-hidden">

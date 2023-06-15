@@ -24,6 +24,7 @@ async function fetchGames() {
 ;(async () => {
 	let games: Game[] = []
 	let gamesById: GamesMap = {}
+	const gamesUpdatedById: GamesMap = {}
 
 	postMessage({
 		action: 'setIsLoading',
@@ -68,7 +69,7 @@ async function fetchGames() {
 	setInterval(() => {
 		postMessage({
 			action: 'updateGames',
-			payload: gamesById,
+			payload: gamesUpdatedById,
 		})
 	}, GAMES_UPDATE_INTERVAL)
 })()
