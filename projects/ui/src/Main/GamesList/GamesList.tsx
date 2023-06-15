@@ -30,8 +30,17 @@ const GamesList: React.FC<GamesListProps> = ({
 		[],
 	)
 
+	const CARD_HEIGHT = 120
+	const CARD_GAP = 16
+	const ROW_HEIGHT = CARD_HEIGHT + CARD_GAP
+
 	return (
-		<div className="grid  md:grid-cols-2 gap-4 sticky top-8">
+		<div
+			className="relative"
+			style={{
+				height: ROW_HEIGHT * Math.ceil(games.length / 2) - CARD_GAP,
+			}}
+		>
 			{isLoading &&
 				Array(10)
 					.fill(null)
@@ -40,14 +49,23 @@ const GamesList: React.FC<GamesListProps> = ({
 					))}
 
 			{!isLoading &&
-				games.map((game) => (
-					<BaseGameCardMemorized key={game.id}>
-						<BaseGameMemorized
-							game={game}
-							bet={bets[game.id]}
-							onBet={handleBetGame}
-						/>
-					</BaseGameCardMemorized>
+				games.map((game, index) => (
+					<div
+						style={{
+							position: 'absolute',
+							width: `calc(50% - ${CARD_GAP}px)`,
+							left: index % 2 === 1 ? '50%' : '0',
+							top: ROW_HEIGHT * Math.floor(index / 2),
+						}}
+					>
+						<BaseGameCardMemorized key={game.id}>
+							<BaseGameMemorized
+								game={game}
+								bet={bets[game.id]}
+								onBet={handleBetGame}
+							/>
+						</BaseGameCardMemorized>
+					</div>
 				))}
 		</div>
 	)

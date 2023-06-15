@@ -24,7 +24,7 @@ async function fetchGames() {
 ;(async () => {
 	let games: Game[] = []
 	let gamesById: GamesMap = {}
-	const gamesUpdatedById: GamesMap = {}
+	let gamesUpdatedById: GamesMap = {}
 
 	postMessage({
 		action: 'setIsLoading',
@@ -69,7 +69,12 @@ async function fetchGames() {
 	setInterval(() => {
 		postMessage({
 			action: 'updateGames',
-			payload: gamesUpdatedById,
+			payload: {
+				...gamesUpdatedById,
+			},
 		})
+
+		// Purge updated games dictionary
+		gamesUpdatedById = {}
 	}, GAMES_UPDATE_INTERVAL)
 })()
