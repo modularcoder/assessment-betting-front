@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react'
+import { memo, useCallback, useEffect, Profiler } from 'react'
 import { useGamesSubscription, useGames, useGamesBets } from './_hooks'
 import TheHeader from './_common/TheHeader/TheHeader'
 import GamesList from './GamesList/GamesList'
@@ -8,10 +8,6 @@ const Main = () => {
 	const { isLoading, isLive } = useGamesSubscription()
 	const { games, gamesById } = useGames()
 	const { bets, betsByGameId, betGame } = useGamesBets()
-
-	useEffect(() => {
-		console.log('Main mounted')
-	}, [])
 
 	// const games = gamesAll.slice(0, 10)
 
@@ -24,18 +20,35 @@ const Main = () => {
 		[],
 	)
 
+	const onRender = useCallback((...args: any) => {
+		const [id, phase, actualDuration, baseDuration, startTime, commitTime] =
+			args
+
+		// console.log('Profiler: Games List Rerendered')
+		// console.log(`
+		// 	id: ${id},
+		// 	phase ${phase},
+		// 	actualDuration ${actualDuration},
+		// 	baseDuration ${baseDuration},
+		// 	startTime ${startTime},
+		// 	commitTime	${commitTime}
+		// `)
+	}, [])
+
 	return (
 		<main>
 			<TheHeader isLive={isLive} />
 			<div className="grid grid-cols-3 gap-4  container mx-auto py-8 min-h-[400px]">
 				{/* Games */}
 				<div className="col-span-2">
-					<GamesList
-						games={games}
-						bets={betsByGameId}
-						onBetGame={handleBet}
-						isLoading={isLoading}
-					/>
+					<Profiler id="GamesList" onRender={onRender}>
+						<GamesList
+							games={games}
+							bets={betsByGameId}
+							onBetGame={handleBet}
+							isLoading={isLoading}
+						/>
+					</Profiler>
 				</div>
 
 				{/* GamesBets */}

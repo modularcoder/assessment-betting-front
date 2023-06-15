@@ -24,7 +24,7 @@ async function fetchGames() {
 ;(async () => {
 	let games: Game[] = []
 	let gamesById: GamesMap = {}
-	let gamesUpdatedById: GamesMap = {}
+	const gamesUpdatedById: GamesMap = {}
 
 	postMessage({
 		action: 'setIsLoading',
@@ -65,16 +65,16 @@ async function fetchGames() {
 		payload: false,
 	})
 
-	// Notify about the updates
-	setInterval(() => {
-		postMessage({
-			action: 'updateGames',
-			payload: {
-				...gamesUpdatedById,
-			},
-		})
+	// // Notify about the updates
+	// setInterval(() => {
+	// 	postMessage({
+	// 		action: 'updateGames',
+	// 		payload: {
+	// 			...gamesUpdatedById,
+	// 		},
+	// 	})
 
-		// Purge updated games dictionary
-		gamesUpdatedById = {}
-	}, GAMES_UPDATE_INTERVAL)
+	// 	// Purge updated games dictionary
+	// 	gamesUpdatedById = {}
+	// }, GAMES_UPDATE_INTERVAL)
 })()

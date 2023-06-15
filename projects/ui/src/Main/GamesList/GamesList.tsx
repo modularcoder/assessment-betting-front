@@ -17,22 +17,45 @@ type GamesListProps = {
 	onBetGame: (gameId: string, teamId?: string) => void
 }
 
+const CARD_HEIGHT = 120
+const CARD_GAP = 16
+const ROW_HEIGHT = CARD_HEIGHT + CARD_GAP
+
+const MemorizedTest = memo(function Test({
+	game,
+	onBet,
+	betTeamId,
+	betAmmount,
+}: {
+	game: Game
+	betTeamId?: string
+	betAmmount?: number
+	onBet: (args: any) => void
+}) {
+	console.log('Memorized test rendered', game.id)
+
+	return (
+		<div>
+			Test {game.id} {betTeamId} {betAmmount}
+		</div>
+	)
+})
+
 const GamesList: React.FC<GamesListProps> = ({
 	isLoading,
 	games,
 	bets,
 	onBetGame,
 }) => {
+	console.log('--------------------')
+	console.log('GamesList rendered')
+
 	const handleBetGame: GamesListProps['onBetGame'] = useCallback(
 		(gameId, teamId) => {
 			onBetGame(gameId, teamId)
 		},
 		[],
 	)
-
-	const CARD_HEIGHT = 120
-	const CARD_GAP = 16
-	const ROW_HEIGHT = CARD_HEIGHT + CARD_GAP
 
 	return (
 		<div
@@ -57,24 +80,36 @@ const GamesList: React.FC<GamesListProps> = ({
 						/>
 					))}
 
+			{/* {!isLoading &&
+				games.map((game, index) => (
+					<BaseGameCardMemorized key={game.id}>
+						<MemorizedTest
+							game={game}
+							onBet={handleBetGame}
+							betTeamId={bets[game.id]?.teamId}
+							betAmmount={bets[game.id]?.amount}
+						/>
+					</BaseGameCardMemorized>
+				))} */}
+
 			{!isLoading &&
 				games.map((game, index) => (
-					<div
-						style={{
-							position: 'absolute',
-							width: `calc(50% - ${CARD_GAP}px)`,
-							left: index % 2 === 1 ? '50%' : '0',
-							top: ROW_HEIGHT * Math.floor(index / 2),
-						}}
+					<BaseGameCardMemorized
+						key={game.id}
+						// style={{
+						// 	position: 'absolute',
+						// 	width: `calc(50% - ${CARD_GAP}px)`,
+						// 	left: index % 2 === 1 ? '50%' : '0',
+						// 	top: `${ROW_HEIGHT * Math.floor(index / 2)}`,
+						// }}
 					>
-						<BaseGameCardMemorized key={game.id}>
-							<BaseGameMemorized
-								game={game}
-								bet={bets[game.id]}
-								onBet={handleBetGame}
-							/>
-						</BaseGameCardMemorized>
-					</div>
+						<BaseGameMemorized
+							game={game}
+							betTeamId={bets[game.id]?.teamId}
+							betAmmount={bets[game.id]?.amount}
+							onBet={handleBetGame}
+						/>
+					</BaseGameCardMemorized>
 				))}
 		</div>
 	)

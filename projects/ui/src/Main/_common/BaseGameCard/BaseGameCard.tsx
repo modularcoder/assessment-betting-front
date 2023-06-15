@@ -2,9 +2,12 @@ import React, { useRef, useLayoutEffect } from 'react'
 
 type BaseGameCardProps = {
 	children: React.ReactNode
+	style?: React.CSSProperties
 }
 
-const BaseGameCard: React.FC<BaseGameCardProps> = ({ children }) => {
+const BaseGameCard: React.FC<BaseGameCardProps> = ({ children, style }) => {
+	// console.log('BaseGameCard rerendered')
+
 	const numRenders = useRef(0)
 
 	// Run this on first render
@@ -17,7 +20,10 @@ const BaseGameCard: React.FC<BaseGameCardProps> = ({ children }) => {
 	})
 
 	return (
-		<div className="w-full rounded-lg shadow-lg bg-white overflow-hidden flex flex-col">
+		<div
+			className="w-full rounded-lg shadow-lg bg-white overflow-hidden flex flex-col"
+			style={style}
+		>
 			<div className="p-4">{children}</div>
 			{/* Debugging footer */}
 			<footer className="py-1 px-3 bg-zinc-100 text-xs text-zinc-500 ">

@@ -7,19 +7,16 @@ import LogoDota from './LogoDota.svg'
 
 type BaseGameProps = {
 	game: Game & { numUpdates?: number }
-	bet?: {
-		teamId?: string
-		amount?: number
-	}
+	betTeamId?: string
+	betAmmount?: number
 	onBet: (gameId: string, teamId?: string) => void
 }
 
-const BaseGame: React.FC<BaseGameProps> = ({ game, bet, onBet }) => {
-	console.log('BaseGame Rendered')
+const BaseGame: React.FC<BaseGameProps> = ({ game, betTeamId, onBet }) => {
+	console.log('BaseGame Rendered', game.id)
 
 	const handleBetButtonClick = (teamId: string) => {
-		const newTeamId =
-			bet && bet.teamId && bet.teamId === teamId ? undefined : teamId
+		const newTeamId = betTeamId === teamId ? undefined : teamId
 
 		onBet(game.id, newTeamId)
 	}
@@ -51,7 +48,7 @@ const BaseGame: React.FC<BaseGameProps> = ({ game, bet, onBet }) => {
 									py-1 px-2 text-xs
 									text-white font-medium  rounded min-w-[70px] text-center
 								`,
-								bet && bet.teamId === team.id ? 'bg-green-600' : 'bg-zinc-400',
+								betTeamId === team.id ? 'bg-green-600' : 'bg-zinc-400',
 							)}
 						>
 							{team.coefficient}
