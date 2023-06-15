@@ -1,5 +1,6 @@
 import { useCallback, useEffect } from 'react'
 import { useGamesSubscription, useGames, useGamesBets } from './_hooks'
+import TheHeader from './_common/TheHeader/TheHeader'
 import GamesList from './GamesList/GamesList'
 import GamesBets from './GamesBets/GamesBets'
 
@@ -24,21 +25,28 @@ const Main = () => {
 	)
 
 	return (
-		<main className="grid grid-cols-3 gap-4  container mx-auto py-8 min-h-[400px]">
-			{/* Games */}
-			<div className="col-span-2">
-				<GamesList
-					games={games}
-					bets={betsByGameId}
-					onBetGame={handleBet}
-					isLoading={isLoading}
-				/>
-			</div>
+		<main>
+			<TheHeader isLive={isLive} />
+			<div className="grid grid-cols-3 gap-4  container mx-auto py-8 min-h-[400px]">
+				{/* Games */}
+				<div className="col-span-2">
+					<GamesList
+						games={games}
+						bets={betsByGameId}
+						onBetGame={handleBet}
+						isLoading={isLoading}
+					/>
+				</div>
 
-			{/* GamesBets */}
-			<div>
-				<div className="sticky flex top-8 h-[calc(100vh-64px)]">
-					<GamesBets gamesById={gamesById} bets={bets} onBetGame={handleBet} />
+				{/* GamesBets */}
+				<div>
+					<div className="sticky flex top-20 h-[calc(100vh-112px)]">
+						<GamesBets
+							gamesById={gamesById}
+							bets={bets}
+							onBetGame={handleBet}
+						/>
+					</div>
 				</div>
 			</div>
 		</main>

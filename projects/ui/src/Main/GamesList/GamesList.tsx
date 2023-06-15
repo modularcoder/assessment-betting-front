@@ -45,7 +45,16 @@ const GamesList: React.FC<GamesListProps> = ({
 				Array(10)
 					.fill(null)
 					.map((_, index) => (
-						<BaseSkeleton key={index} className="h-[120px] w-full" />
+						<BaseSkeleton
+							key={index}
+							className="h-[120px]"
+							style={{
+								position: 'absolute',
+								width: `calc(50% - ${CARD_GAP}px)`,
+								left: index % 2 === 1 ? '50%' : '0',
+								top: ROW_HEIGHT * Math.floor(index / 2),
+							}}
+						/>
 					))}
 
 			{!isLoading &&
