@@ -1,12 +1,10 @@
-import React, { useRef, useLayoutEffect } from 'react'
+import React, { memo, useRef, useLayoutEffect } from 'react'
+import BaseGame, { BaseGameProps } from '../BaseGame/BaseGame'
 
-type BaseGameCardProps = {
-	children: React.ReactNode
-	style?: React.CSSProperties
-}
+type BaseGameCardProps = BaseGameProps
 
-const BaseGameCard: React.FC<BaseGameCardProps> = ({ children, style }) => {
-	// console.log('BaseGameCard rerendered')
+const BaseGameCard: React.FC<BaseGameCardProps> = (props) => {
+	console.log('BaseGameCard rendered')
 
 	const numRenders = useRef(0)
 
@@ -20,11 +18,10 @@ const BaseGameCard: React.FC<BaseGameCardProps> = ({ children, style }) => {
 	})
 
 	return (
-		<div
-			className="w-full rounded-lg shadow-lg bg-white overflow-hidden flex flex-col"
-			style={style}
-		>
-			<div className="p-4">{children}</div>
+		<div className="w-full rounded-lg shadow-lg bg-white overflow-hidden flex flex-col">
+			<div className="p-4">
+				<BaseGame {...props} />
+			</div>
 			{/* Debugging footer */}
 			<footer className="py-1 px-3 bg-zinc-100 text-xs text-zinc-500 ">
 				Rendered {numRenders.current} times
@@ -32,5 +29,16 @@ const BaseGameCard: React.FC<BaseGameCardProps> = ({ children, style }) => {
 		</div>
 	)
 }
+
+export const BaseGameCardMemorized = memo(
+	BaseGameCard,
+	(prevProps, nextProps) => {
+		return (
+			prevProps.game.id === nextProps.game.id &&
+			prevProps.bet?.teamId === nextProps.bet?.teamId &&
+			prevProps.bet?.amount === nextProps.bet?.amount
+		)
+	},
+)
 
 export default BaseGameCard

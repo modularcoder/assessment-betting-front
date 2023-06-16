@@ -11,12 +11,14 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@reduxjs/toolkit": "^1.9.5",
     "@shopify/react-web-worker": "^5.0.13",
     "clsx": "^1.2.1",
     "immer": "^10.0.2",
     "jsondiffpatch": "^0.4.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-redux": "^8.1.0",
     "react-use-websocket": "^4.3.1",
     "tailwind-merge": "^1.13.1",
     "zustand": "^4.3.8"

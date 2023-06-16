@@ -1,22 +1,21 @@
 import clsx from 'clsx'
-import React from 'react'
+import React, { memo } from 'react'
 
-import { Game } from '../../../_types/index'
+import { Game, GameBet } from '../../../_types/index'
 import LogoCS from './LogoCS.svg'
 import LogoDota from './LogoDota.svg'
 
-type BaseGameProps = {
+export type BaseGameProps = {
 	game: Game & { numUpdates?: number }
-	betTeamId?: string
-	betAmmount?: number
+	bet?: GameBet
 	onBet: (gameId: string, teamId?: string) => void
 }
 
-const BaseGame: React.FC<BaseGameProps> = ({ game, betTeamId, onBet }) => {
+const BaseGame: React.FC<BaseGameProps> = ({ game, bet, onBet }) => {
 	console.log('BaseGame Rendered', game.id)
 
 	const handleBetButtonClick = (teamId: string) => {
-		const newTeamId = betTeamId === teamId ? undefined : teamId
+		const newTeamId = bet?.teamId === teamId ? undefined : teamId
 
 		onBet(game.id, newTeamId)
 	}
@@ -48,7 +47,7 @@ const BaseGame: React.FC<BaseGameProps> = ({ game, betTeamId, onBet }) => {
 									py-1 px-2 text-xs
 									text-white font-medium  rounded min-w-[70px] text-center
 								`,
-								betTeamId === team.id ? 'bg-green-600' : 'bg-zinc-400',
+								bet?.teamId === team.id ? 'bg-green-600' : 'bg-zinc-400',
 							)}
 						>
 							{team.coefficient}

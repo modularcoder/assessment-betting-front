@@ -1,9 +1,13 @@
 import { Game, GamesMap } from '../../_types'
 
 // This should come from .env
-const GAMES_UPDATE_INTERVAL = 3000
+const GAMES_UPDATE_INTERVAL = 500
 const API_URL = 'http://127.0.0.1:8080/games'
 const WS_URL = 'ws://127.0.0.1:8080/games'
+
+export const test = () => {
+	return API_URL
+}
 
 // Fetch games with REST api
 async function fetchGames() {
@@ -65,16 +69,16 @@ async function fetchGames() {
 		payload: false,
 	})
 
-	// // Notify about the updates
-	// setInterval(() => {
-	// 	postMessage({
-	// 		action: 'updateGames',
-	// 		payload: {
-	// 			...gamesUpdatedById,
-	// 		},
-	// 	})
+	// Notify about the updates
+	setInterval(() => {
+		postMessage({
+			action: 'updateGames',
+			payload: {
+				...gamesById,
+			},
+		})
 
-	// 	// Purge updated games dictionary
-	// 	gamesUpdatedById = {}
-	// }, GAMES_UPDATE_INTERVAL)
+		// Purge updated games dictionary
+		// gamesUpdatedById = {}
+	}, GAMES_UPDATE_INTERVAL)
 })()
