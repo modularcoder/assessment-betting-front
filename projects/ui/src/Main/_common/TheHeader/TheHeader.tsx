@@ -15,18 +15,18 @@ const TheHeader: React.FC<TheHeaderProps> = ({ isLive }) => {
 		>
 			<h1 className=" text-lg font-semibold ">BettingFront</h1>
 
-			<div className="flex items-center space-x-2 text-xs uppercase ">
-				<div
-					className={clsx(
-						`rounded-full w-2 h-2 animate-pulse`,
-						isLive ? ' bg-green-600 ' : ' bg-gray-400',
-					)}
-				/>
+			<div className="flex items-center space-x-2 text-xs font-medium uppercase ">
 				{isLive ? (
 					<div>live</div>
 				) : (
 					<div className=" text-zinc-400 animate-pulse">offline</div>
 				)}
+				<div
+					className={clsx(
+						`rounded-full w-2 h-2`,
+						isLive ? ' bg-emerald-500     ' : 'animate-pulse bg-gray-400',
+					)}
+				/>
 			</div>
 		</header>
 	)

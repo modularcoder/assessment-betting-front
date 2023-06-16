@@ -1,7 +1,7 @@
 import { memo, useCallback, useEffect, Profiler } from 'react'
 import { useGamesSubscription, useGames, useGamesBets } from './_hooks'
 import TheHeader from './_common/TheHeader/TheHeader'
-import GamesList from './GamesList/GamesList'
+import Games from './Games/Games'
 import GamesBets from './GamesBets/GamesBets'
 
 const Main = () => {
@@ -9,7 +9,7 @@ const Main = () => {
 	const { games, gamesById } = useGames()
 	const { bets, betsByGameId, betGame } = useGamesBets()
 
-	const gamesVisivle = games.slice(0, 10)
+	const gamesVisivle = games.slice(0, 100)
 
 	// const games = gamesAll.slice(0, 10)
 
@@ -44,7 +44,7 @@ const Main = () => {
 				{/* Games */}
 				<div className="col-span-2">
 					<Profiler id="GamesList" onRender={onRender}>
-						<GamesList
+						<Games
 							games={gamesVisivle}
 							bets={betsByGameId}
 							onBetGame={handleBet}

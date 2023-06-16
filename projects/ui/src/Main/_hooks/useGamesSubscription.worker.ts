@@ -69,6 +69,18 @@ async function fetchGames() {
 		payload: false,
 	})
 
+	let isLive = false
+
+	// Occasionarry switch the online status
+	setInterval(() => {
+		isLive = !isLive
+
+		postMessage({
+			action: 'setIsLive',
+			payload: isLive,
+		})
+	}, 10000)
+
 	// Notify about the updates
 	setInterval(() => {
 		postMessage({
