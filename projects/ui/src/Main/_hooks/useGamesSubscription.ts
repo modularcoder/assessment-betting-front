@@ -27,7 +27,7 @@ export default function useGamesData() {
 				payload: unknown
 			}
 		}) => {
-			console.log('Worker Message', message.data)
+			// console.log('Worker Message', message.data)
 
 			switch (message.data.action) {
 				case 'setIsLoading':

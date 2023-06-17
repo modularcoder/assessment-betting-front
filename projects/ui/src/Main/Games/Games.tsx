@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useLayoutEffect, useState, useRef } from 'react'
 
 import { Game, GameBet } from '../../_types'
 import { throttle } from '@/_services/utilsService'
@@ -9,31 +9,65 @@ import { BaseGameCardMemorized } from '../_common/BaseGameCard/BaseGameCard'
 type GamesListProps = {
 	height: number
 	rowHeight: number
-	games: Game[]
-	renderGame: (index: number, isComputing?: boolean) => JSX.Element
+	items: Game[]
+	renderItem: (index: number, isComputing?: boolean) => JSX.Element
 }
 
 const GamesList: React.FC<GamesListProps> = ({
-	games,
+	items,
 	height,
 	rowHeight,
-	renderGame,
+	renderItem,
 }) => {
-	const isComputing = false
-	const [scrollPosition, setScrollPosition] = useState(window.scrollY)
+	const listRef = useRef<HTMLDivElement>(null)
+	const [visibleItemsIndexes, setVisibleItemsIndexes] = useState<number[]>([])
 
-	console.log('Games List Rendered')
+	// console.log('Games List Rendered')
 
-	useEffect(() => {
-		const updatePosition = () => {
-			setScrollPosition(window.scrollY)
+	useLayoutEffect(() => {
+		const updateVisibleItems = () => {
+			if (!listRef.current) {
+				console.log('Why god why')
+
+				return
+			}
+
+			const itemsPerVirtualPage = Math.floor(window.innerHeight / rowHeight)
+			const virtualPageHieght = itemsPerVirtualPage * rowHeight
+			const numVirtualPages = Math.ceil(height / virtualPageHieght)
+
+			const currentPage =
+				Math.floor(
+					Math.max(0, -listRef.current.getBoundingClientRect().top) /
+						virtualPageHieght,
+				) + 1
+			const prevPage = Math.max(1, currentPage - 1)
+			const nextPage = Math.min(numVirtualPages, currentPage + 1)
+
+			const startItemIndex = Math.max(0, (prevPage - 1) * itemsPerVirtualPage)
+			const endItemIndex = Math.min(
+				items.length - 1,
+				nextPage * itemsPerVirtualPage,
+			)
+
+			const visibleItemIndexes = []
+
+			for (let i = startItemIndex; i <= endItemIndex; i++) {
+				visibleItemIndexes.push(i)
+			}
+
+			setVisibleItemsIndexes(visibleItemIndexes)
 		}
 
-		window.addEventListener('scroll', throttle(updatePosition, 150))
+		window.addEventListener('scroll', throttle(updateVisibleItems, 100))
+		window.addEventListener('resize', throttle(updateVisibleItems, 100))
 
-		updatePosition()
+		updateVisibleItems()
 
-		return () => window.removeEventListener('scroll', updatePosition)
+		return () => {
+			window.removeEventListener('scroll', updateVisibleItems)
+			window.removeEventListener('resize', updateVisibleItems)
+		}
 	}, [])
 
 	return (
@@ -41,21 +75,20 @@ const GamesList: React.FC<GamesListProps> = ({
 			style={{
 				height,
 			}}
-			className="relative bg-red-700"
+			ref={listRef}
+			className="relative"
 		>
-			<div className="fixed bg-blue-400 rounded-sm text-white text-xs top-2 left-1/2 z-30 p-2">
-				Scroll position: {scrollPosition}
-			</div>
-			{games.map((game, index) => (
+			{visibleItemsIndexes.map((itemIndex) => (
 				<div
+					key={itemIndex}
 					style={{
 						position: 'absolute',
 						width: `100%`,
-						// left: index % 2 === 1 ? '50%' : '0',
-						top: rowHeight * index,
+						top: rowHeight * itemIndex,
 					}}
 				>
-					{renderGame(index, isComputing)}
+					<span className="absolute ">{itemIndex + 1}</span>
+					{renderItem(itemIndex)}
 				</div>
 			))}
 		</div>
@@ -82,8 +115,8 @@ type GamesProps = {
 // )
 
 const Games: React.FC<GamesProps> = ({ isLoading, games, bets, onBetGame }) => {
-	console.log('--------------------')
-	console.log('GamesList rendered')
+	// console.log('--------------------')
+	// console.log('GamesList rendered')
 
 	const CARD_HEIGHT = 120
 	const CARD_GAP = 16
@@ -120,24 +153,26 @@ const Games: React.FC<GamesProps> = ({ isLoading, games, bets, onBetGame }) => {
 						/>
 					))} */}
 
-			<GamesList
-				games={games}
-				height={ROW_HEIGHT * games.length - CARD_GAP}
-				rowHeight={ROW_HEIGHT}
-				renderGame={(index: number, isComputing?: boolean) => (
-					<>
-						{isLoading || isComputing ? (
-							<BaseSkeleton className="h-[120px]" />
-						) : (
-							<BaseGameCardMemorized
-								game={games[index]}
-								bet={bets[games[index].id]}
-								onBet={handleBetGame}
-							/>
-						)}
-					</>
-				)}
-			/>
+			{!isLoading && games.length && (
+				<GamesList
+					items={games}
+					height={ROW_HEIGHT * games.length - CARD_GAP}
+					rowHeight={ROW_HEIGHT}
+					renderItem={(index: number) => (
+						<>
+							{isLoading ? (
+								<BaseSkeleton className="h-[120px]" />
+							) : (
+								<BaseGameCardMemorized
+									game={games[index]}
+									bet={bets[games[index].id]}
+									onBet={handleBetGame}
+								/>
+							)}
+						</>
+					)}
+				/>
+			)}
 
 			{/* {!isLoading && (
 				<List

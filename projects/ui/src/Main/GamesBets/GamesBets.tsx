@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react'
 import { GamesMap, GameBet } from '../../_types'
-import BaseGame from '../_common/BaseGame/BaseGame'
+import { BaseGameMemorized } from '../_common/BaseGame/BaseGame'
 
 type GameBetsProps = {
 	gamesById: GamesMap
@@ -22,7 +22,7 @@ const GameBets: React.FC<GameBetsProps> = ({ bets, gamesById, onBetGame }) => {
 			<div className="divide-y">
 				{bets.map((bet) => (
 					<div key={bet.gameId} className="py-4">
-						<BaseGame
+						<BaseGameMemorized
 							game={gamesById[bet.gameId]}
 							bet={bet}
 							onBet={handleBetGame}

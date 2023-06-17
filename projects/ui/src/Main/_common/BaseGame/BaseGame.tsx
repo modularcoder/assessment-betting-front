@@ -59,4 +59,12 @@ const BaseGame: React.FC<BaseGameProps> = ({ game, bet, onBet }) => {
 	)
 }
 
+export const BaseGameMemorized = memo(BaseGame, (prevProps, nextProps) => {
+	return (
+		prevProps.game.id === nextProps.game.id &&
+		prevProps.bet?.teamId === nextProps.bet?.teamId &&
+		prevProps.bet?.amount === nextProps.bet?.amount
+	)
+})
+
 export default BaseGame
