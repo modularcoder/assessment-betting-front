@@ -3,7 +3,7 @@ import { Game, GamesMap } from '../../_types'
 // This should come from .env
 const GAMES_UPDATE_INTERVAL = 500
 const API_URL = 'http://127.0.0.1:8080/games'
-const WS_URL = 'ws://127.0.0.1:8080/games'
+// const WS_URL = 'ws://127.0.0.1:8080/games'
 
 export const test = () => {
 	return API_URL
@@ -28,7 +28,7 @@ async function fetchGames() {
 ;(async () => {
 	let games: Game[] = []
 	let gamesById: GamesMap = {}
-	const gamesUpdatedById: GamesMap = {}
+	// const gamesUpdatedById: GamesMap = {}
 
 	postMessage({
 		action: 'setIsLoading',
@@ -89,7 +89,6 @@ async function fetchGames() {
 				...gamesById,
 			},
 		})
-
 		// Purge updated games dictionary
 		// gamesUpdatedById = {}
 	}, GAMES_UPDATE_INTERVAL)

@@ -1,11 +1,14 @@
 import React, { memo, useRef, useLayoutEffect } from 'react'
 import BaseGame, { BaseGameProps } from '../BaseGame/BaseGame'
 
-type BaseGameCardProps = BaseGameProps
+type BaseGameCardProps = BaseGameProps & {
+	gameNumber?: number
+}
 
-const BaseGameCard: React.FC<BaseGameCardProps> = (props) => {
-	console.log('BaseGameCard rendered')
-
+const BaseGameCard: React.FC<BaseGameCardProps> = ({
+	gameNumber,
+	...props
+}) => {
 	const numRenders = useRef(0)
 
 	// Run this on first render
@@ -24,7 +27,8 @@ const BaseGameCard: React.FC<BaseGameCardProps> = (props) => {
 			</div>
 			{/* Debugging footer */}
 			<footer className="py-1 px-3 bg-zinc-100 text-xs text-zinc-500 ">
-				Rendered {numRenders.current} times
+				Game No. {gameNumber} | Rendered {numRenders.current} times after
+				mounting
 			</footer>
 		</div>
 	)

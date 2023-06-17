@@ -12,7 +12,7 @@ export type BaseGameProps = {
 }
 
 const BaseGame: React.FC<BaseGameProps> = ({ game, bet, onBet }) => {
-	console.log('BaseGame Rendered', game.id)
+	// console.log('BaseGame Rendered', game.id)
 
 	const handleBetButtonClick = (teamId: string) => {
 		const newTeamId = bet?.teamId === teamId ? undefined : teamId
