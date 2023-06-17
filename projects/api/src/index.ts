@@ -8,7 +8,7 @@ import {
 } from './_services/gamesService'
 
 // Generate fake 2000 initial games
-generateGames(1000)
+generateGames(10000)
 
 import cors from 'cors'
 const port = 8080

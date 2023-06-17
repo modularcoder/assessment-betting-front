@@ -23,13 +23,17 @@ const GamesList: React.FC<GamesListProps> = ({
 }) => {
 	const listRef = useRef<HTMLDivElement>(null)
 	const [visibleItemsIndexes, setVisibleItemsIndexes] = useState<number[]>([])
-	const [debugState, setDebugState] = useState<unknown>()
+	const [debugState, setDebugState] = useState<any>()
 
 	const height = Math.max(0, items.length * rowHeight - (rowGap || 0))
+
+	// console.log('Games List Rendered')
 
 	useEffect(() => {
 		const updateVisibleItems = () => {
 			if (!listRef.current) {
+				console.log('Why god why')
+
 				return
 			}
 
@@ -95,11 +99,9 @@ const GamesList: React.FC<GamesListProps> = ({
 			ref={listRef}
 			className="relative"
 		>
-			{debug && (
-				<div className="fixed bg-blue-700 color-white top-0 z-30 left-1/3">
-					{JSON.stringify(debugState, null, 2)}
-				</div>
-			)}
+			<div className="fixed bg-blue-700 color-white top-0 z-30 left-1/3">
+				{JSON.stringify(debugState, null, 2)}
+			</div>
 			{visibleItemsIndexes.map((itemIndex) => (
 				<div
 					key={itemIndex}
@@ -127,6 +129,9 @@ type GamesProps = {
 }
 
 const Games: React.FC<GamesProps> = ({ isLoading, games, bets, onBetGame }) => {
+	// console.log('--------------------')
+	// console.log('GamesList rendered')
+
 	const CARD_HEIGHT = 120
 	const CARD_GAP = 16
 	const ROW_HEIGHT = CARD_HEIGHT + CARD_GAP
@@ -141,6 +146,7 @@ const Games: React.FC<GamesProps> = ({ isLoading, games, bets, onBetGame }) => {
 	return (
 		<div>
 			<GamesList
+				debug={true}
 				items={
 					isLoading
 						? Array(10)
@@ -164,6 +170,44 @@ const Games: React.FC<GamesProps> = ({ isLoading, games, bets, onBetGame }) => {
 					</>
 				)}
 			/>
+
+			{/* {!isLoading && (
+				<List
+					width={'100%'}
+					height={500}
+					itemCount={games.length}
+					itemSize={ROW_HEIGHT}
+				>
+					{({ index, style }: { index: number; style: any }) => (
+						<div style={style}>
+							<BaseGameCardMemorized
+								game={games[index]}
+								bet={bets[games[index].id]}
+								onBet={handleBetGame}
+							/>
+						</div>
+					)}
+				</List>
+			)} */}
+
+			{/* {!isLoading &&
+				games.map((game, index) => (
+					<div
+						key={game.id}
+						style={{
+							position: 'absolute',
+							width: `calc(50% - ${CARD_GAP}px)`,
+							left: index % 2 === 1 ? '50%' : '0',
+							top: ROW_HEIGHT * Math.floor(index / 2),
+						}}
+					>
+						<BaseGameCardMemorized
+							game={game}
+							bet={bets[game.id]}
+							onBet={handleBetGame}
+						/>
+					</div>
+				))} */}
 		</div>
 	)
 }

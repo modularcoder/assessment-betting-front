@@ -9,10 +9,6 @@ const Main = () => {
 	const { games, gamesById } = useGames()
 	const { bets, betsByGameId, betGame } = useGamesBets()
 
-	const gamesVisivle = games.slice(0, 100)
-
-	// const games = gamesAll.slice(0, 10)
-
 	const handleBet: (gameId: string, teamId?: string) => void = useCallback(
 		(gameId, teamId?: string) => {
 			console.log(`Game ${gameId} ${teamId}`)
@@ -45,7 +41,7 @@ const Main = () => {
 				<div className="col-span-2">
 					<Profiler id="GamesList" onRender={onRender}>
 						<Games
-							games={gamesVisivle}
+							games={games}
 							bets={betsByGameId}
 							onBetGame={handleBet}
 							isLoading={isLoading}
