@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker'
 import { sample, random, round } from 'lodash'
 import { v4 as uuid } from 'uuid'
-import { Game } from '../../../_types'
+import { type Game } from '../../../_types'
 
 let games: Game[] = []
 

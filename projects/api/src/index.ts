@@ -19,17 +19,26 @@ let { app } = appWS
 
 expressWs(app)
 
+app.options('*', cors())
+
+app.use((req, res, next) => {
+	res.header('Access-Control-Allow-Origin', '*')
+	next()
+})
+
 app.use(
 	cors({
 		origin: '*',
 	}),
 )
 
-app.get('/games', (req: Request, res: Response) => {
+app.get('/api/games', (req: Request, res: Response) => {
+	console.log('qwerty')
+
 	res.json(getGames())
 })
 
-app.ws('/games', function (ws, req) {
+app.ws('/api/games', function (ws, req) {
 	// Send update about 30 dandom games every 50 ms
 	setInterval(() => {
 		ws.send(
@@ -43,5 +52,5 @@ app.ws('/games', function (ws, req) {
 })
 
 app.listen(port, () => {
-	console.log(`Example app listening on port ${port}`)
+	console.log(`API listening on port ${port}`)
 })

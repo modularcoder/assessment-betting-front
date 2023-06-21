@@ -39,7 +39,7 @@ const Games: React.FC<GamesProps> = ({ isLoading, games, bets, onBetGame }) => {
 				</div>
 			)}
 
-			{!isLoading && games.length && (
+			{!isLoading && games.length > 0 && (
 				<BaseVirtualList
 					debug={false}
 					items={games}
